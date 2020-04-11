@@ -1,0 +1,59 @@
+
+body{
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+select{
+    font-family: 'Poppins', sans-serif;
+}
+
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.flex-child{
+    flex: 1;
+}
+
+table{
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.confirmed {
+    color: green
+}
+
+.prediction {
+    color: red
+}
+
+.chart {
+    max-height: 80vh !important;
+    margin-bottom: 80px;
+}
+
+.tables{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.content{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 10%;
+    padding-right: 10%
+}
+
+.center{
+    text-align: center
+}
+
+

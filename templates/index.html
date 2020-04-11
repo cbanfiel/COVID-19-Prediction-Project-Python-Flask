@@ -1,0 +1,142 @@
+{% extends 'base.html' %} {% block head %}
+<title>COVID-19 Michigan</title>
+{% endblock %} {% block body %}
+
+<div class="content">
+<div class="center">
+
+    <h1>COVID-19 Michigan Prediction</h1>
+    <div class="disclaimer">
+        <p>Disclaimer: This is a school project, the predictions are created using simple mathematical formulas and data found online, they may not be accurate</p>
+    </div>
+    <h4>Pick a county</h4>
+
+    <form method="POST" action="/" id="countiesForm">
+        <select id="counties" form="countiesForm" name="countylist" style="font-family: 'Poppins', sans-serif;">
+                    {% for selectionCounty in counties %}
+                    {% if selectionCounty.name == county.name %}
+                    <option value="{{selectionCounty.name}}" selected>{{selectionCounty.name}}</option>
+                    {% else %}
+                    <option value="{{selectionCounty.name}}" >{{selectionCounty.name}}</option>
+                    {% endif %}
+                {% endfor %}
+          </select>
+
+        <input type="submit" value="View Charts" style="font-family: 'Poppins', sans-serif;">
+    </form>
+
+</div>
+
+    {% if county != None %}
+
+
+<div class="center">
+    <h4>Predicted COVID-19 cases in {{ county.name }} County, Michigan</h4>
+</div>
+
+    <div class="chart">
+        <canvas id="myChart"></canvas> 
+    </div>
+
+
+    <div class="tables">
+            <div class="flex-child">
+            
+        <h4 class="center">Confirmed Cases</h4>
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Cases</th>
+                        <th>Deaths</th>
+                    </tr>
+            
+                    {% for confirmed in county.data %}
+                    <tr class="confirmed">
+                        <td>{{ confirmed.date }}</td>
+                        <td>{{ confirmed.cases }}</td>
+                        <td>{{confirmed.deaths}}
+                        </td>
+            
+                    </tr>
+                    {% endfor %} 
+            
+                </table>
+            </div>
+            
+            
+                <div class="flex-child">
+
+                    <h4 class="center">Predicted Cases (14 days)</h4>
+                    <table>
+    
+                        <tr>
+                            <th>Date</th>
+                            <th>Cases</th>
+                            <th>Deaths</th>
+                        </tr>
+                
+                 {% for prediction in county.predictions %}
+                        <tr class="prediction">
+                            <td>{{ prediction.date }}</td>
+                            <td>{{ prediction.cases }}</td>
+                            <td>{{prediction.deaths}}
+                            </td>
+                
+                        </tr>
+                        {% endfor %}
+                
+                    </table>
+                </div>
+
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart');
+    let cases = JSON.parse("{{ cases }}");
+    let dates = JSON.parse({{ dates|tojson }});
+
+
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: '# of Cases',
+                data: cases,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRation: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontFamily: "'Poppins'"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontFamily: "'Poppins'"
+                    }
+                }]
+            },
+            legend:{
+                labels: { 
+      fontFamily: 'Poppins'
+    }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}
